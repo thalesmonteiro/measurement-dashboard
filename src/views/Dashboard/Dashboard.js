@@ -16,6 +16,10 @@ import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+
+import BlurOn from "@material-ui/icons/BlurOn"
+import DonutLarge from "@material-ui/icons/DonutLarge"
+import Tonality from "@material-ui/icons/Tonality"
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -28,8 +32,15 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-
 import { bugs, website, server } from "variables/general.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
+import Button from "components/CustomButtons/Button.js";
+import Search from "@material-ui/icons/Search";
+import Send from "@material-ui/icons/Send"
+
+
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 import {
   dailySalesChart,
@@ -41,16 +52,34 @@ import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js"
 
 const useStyles = makeStyles(styles);
 
+
 export default function Dashboard() {
   const classes = useStyles();
+  const [inputMeasure, setInputMeasure] = React.useState("")
+
+  const [inputButton, setButtonMeasure] = React.useState(false)
+
+  const [data, onChange] = React.useState(new Date());
+
+  const [inputList, setInputList] = React.useState(["tuim", "tuim2", "tuim3"])
+
+  const handleclickButtonMeasure = events =>{
+    // TODO
+    //Request to API
+    console.log(inputMeasure)
+    // setInputMeasure(events.target.value)
+    events.preventDefault() 
+  }
+  console.log(inputMeasure)
+  console.log(data)
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={4} >
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
-                <Icon>content_copy</Icon>
+                <Icon>view_week</Icon>
               </CardIcon>
               <p className={classes.cardCategory}>Last measurement</p>
               <h3 className={classes.cardTitle}>
@@ -58,9 +87,7 @@ export default function Dashboard() {
               </h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange /> 2 hours ago
-              </div>
+  
             </CardFooter>
             {/* <CardFooter stats>
               <div className={classes.stats}>
@@ -74,60 +101,54 @@ export default function Dashboard() {
             </CardFooter> */}
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={4} >
           <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
-                <Store />
+                <BlurOn/>
               </CardIcon>
               <p className={classes.cardCategory}>Relative permittivity</p>
               <h3 className={classes.cardTitle}>2.3</h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange /> 2 hours ago
-              </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        {/* <GridItem xs={12} sm={6} md={3}>
           <Card>
             <CardHeader color="danger" stats icon>
               <CardIcon color="danger">
-                <Icon>info_outline</Icon>
+                <DonutLarge/>
               </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
+              <p className={classes.cardCategory}>Measurement type</p>
+              <h3 className={classes.cardTitle}>Capacitance</h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
-                <LocalOffer />
-                Tracked from Github
-              </div>
+          
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        </GridItem> */}
+        <GridItem xs={4}>
           <Card>
             <CardHeader color="info" stats icon>
               <CardIcon color="info">
-                <Accessibility />
+                <Tonality/>
               </CardIcon>
-              <p className={classes.cardCategory}>Followers</p>
-              <h3 className={classes.cardTitle}>+245</h3>
+              <p className={classes.cardCategory}>Oil Classification</p>
+              <h3 className={classes.cardTitle}>Pure</h3>
             </CardHeader>
             <CardFooter stats>
-              <div className={classes.stats}>
-                <Update />
-                Just Updated
+              <div className={classes.stats}>  
               </div>
             </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>
+
+      {/* GRAFICO  */}
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
+        <GridItem xs={12}>
+          <Card chart >
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
@@ -135,15 +156,12 @@ export default function Dashboard() {
                 type="Line"
                 options={dailySalesChart.options}
                 listener={dailySalesChart.animation}
+                style={{ height: "250px", width: "100%", display: "block" }}
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <h4 className={classes.cardTitle}>Measures</h4>
               <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                </span>{" "}
-                increase in today sales.
               </p>
             </CardBody>
             <CardFooter chart>
@@ -153,7 +171,7 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        {/* <GridItem xs={12} sm={6}>
           <Card chart>
             <CardHeader color="warning">
               <ChartistGraph
@@ -175,91 +193,78 @@ export default function Dashboard() {
               </div>
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
-              />
+        </GridItem> */}
+      </GridContainer>
+
+     
+      <GridContainer>
+        {/* Primeiro form */}
+      <GridItem xs={12} sm={12} md={6}>
+          <Card>
+            <CardHeader color="info">
+              <h4 className={classes.cardTitleWhite}>Search for measurement</h4>
             </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+            <CardBody style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
+
+            <Calendar
+              onChange={onChange}
+              data={data}
+            />
+            <Button
+              color="transparent"
+              //color={window.innerWidth > 959 ? "transparent" : "white"}
+              justIcon={window.innerWidth > 959}
+              simple={!(window.innerWidth > 959)}
+              aria-label="Send"
+              className={classes.buttonLink}
+              onClick={handleclickButtonMeasure}
+            >
+              <Send/>
+            </Button> 
+
+            {inputList.map(item => {
+              return(
+                <div> {item} </div>
+              )
+            })}
+
+
             </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
-              </div>
-            </CardFooter>
           </Card>
         </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <CustomTabs
-            title="Tasks:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Bugs",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                  />
-                ),
-              },
-              {
-                tabName: "Website",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                ),
-              },
-              {
-                tabName: "Server",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                  />
-                ),
-              },
-            ]}
-          />
-        </GridItem>
+
+        {/* Segundo form */}
         <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
-              <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
-              </p>
+            <CardHeader color="info">
+              <h4 className={classes.cardTitleWhite}>Request measurement</h4>
             </CardHeader>
             <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"],
-                ]}
-              />
+            <CustomInput
+              formControlProps={{
+                className: classes.margin + " " + classes.search
+              }}
+              inputProps={{
+                placeholder: "Number of measures",
+                inputProps: {
+                  "aria-label": "Value"
+                },
+                onChange: (e) => setInputMeasure(e.target.value),
+                value: inputMeasure
+              }}
+        />
+      <Button
+        color="transparent"
+        //color={window.innerWidth > 959 ? "transparent" : "white"}
+        justIcon={window.innerWidth > 959}
+        simple={!(window.innerWidth > 959)}
+        aria-label="Send"
+        className={classes.buttonLink}
+        onClick={handleclickButtonMeasure}
+      >
+        <Send/>
+       </Button> 
+
             </CardBody>
           </Card>
         </GridItem>

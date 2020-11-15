@@ -17,15 +17,15 @@ var delays2 = 80,
 
 const dailySalesChart = {
   data: {
-    labels: ["M", "T", "W", "T", "F", "S", "S"],
-    series: [[12, 17, 7, 50, 50, 18, 38]],
+    labels: ["12:00:00", "12:00:30", "12:01:00", "12:01:30", "12:02:00", "12:02:30", "12:03:00"],
+    series: [[1.1, 1.5, 1.7, 1.2, 1.3, 1.8, 1.9]],
   },
   options: {
     lineSmooth: Chartist.Interpolation.cardinal({
-      tension: 0,
+      tension: 1,
     }),
     low: 0,
-    high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    high: 3, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
     chartPadding: {
       top: 0,
       right: 0,
